@@ -5,9 +5,14 @@ if [ "$EUID" -ne 0 ]; then
   echo "Por favor, ejecuta este script como root o con sudo."
   exit 1
 fi
-
+# Actualizamos el sistema para evitar incompatibilidades
 apt update
 apt upgrade -y
+
+# Instlamos y creamos un TimeShift para poder reiniciar en caso de ser necesario
+apt install timeshift -y
+create snapshot
+timeshift --create --comment "Inicio de instalación/Initial Setup"
 
 # Permitir el puerto 777/tcp en UFW
 echo "Permitiendo el puerto 777/tcp en el firewall UFW..."
