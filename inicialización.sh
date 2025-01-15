@@ -23,7 +23,7 @@ ufw reload
 # Cambiar el puerto SSH al 777
 echo "Cambiando el puerto SSH a 777..."
 sed -i '/^#\?Port [0-9]*/c\Port 777' /etc/ssh/sshd_config
-f
+
 # Reiniciar el servicio SSH para aplicar los cambios
 echo "Reiniciando el servicio SSH..."
 systemctl enable ssh
