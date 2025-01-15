@@ -62,7 +62,6 @@ su - cowrie -c "cd /home/cowrie/cowrie && python3 -m venv cowrie-env && source c
 ufw allow 2222/tcp
 ufw reload
 iptables -t nat -A PREROUTING -p tcp --dport 22 -j REDIRECT --to-port 2222
-iptables-save > /etc/iptables/rules.v4
 su - cowrie -c "/home/cowrie/cowrie/bin/cowrie start"
 
 # Finalización
