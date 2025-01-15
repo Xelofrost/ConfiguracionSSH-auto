@@ -56,7 +56,7 @@ apt install -y snort
 # Instalar Cowrie y configurar la redirección del puerto 22 al 2222
 echo "Instalando Cowrie y configurando la redirección del puerto 22 al 2222..."
 apt update && apt install -y git python3-venv python3-dev libssl-dev libffi-dev build-essential
-adduser --disabled-password cowrie
+adduser --disabled-password --gecos "" cowrie
 su - cowrie -c "git clone https://github.com/cowrie/cowrie /home/cowrie/cowrie"
 su - cowrie -c "cd /home/cowrie/cowrie && python3 -m venv cowrie-env && source cowrie-env/bin/activate && pip install --upgrade pip && pip install -r requirements.txt"
 ufw allow 2222/tcp
