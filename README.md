@@ -5,8 +5,8 @@ Herramienta pensada para facilitar y automatizar la seguridad de nuestros servid
 Su uso es extremadamente sencillo, tan solo debemos darle permisos de ejecución al archivo y ejecutarlo.
 
 ```bash
-chmod +x ./ConfiguracionSSH-auto.sh
-./ConfiguracionSSH-auto.sh
+chmod +x ./ConfiguradorSSH.sh
+./ConfiguradorSSH.sh
 ```
 Una vez hagamos esto, solo rellenaremos los campos que nos pide la contraseña y esta se asegurará de instalar lo que necesitemos.
 
