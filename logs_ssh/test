@@ -1,0 +1,17 @@
+# Instalar fail2ban
+echo "Instalando fail2ban..."
+apt update && apt install -y fail2ban
+
+# Configuración básica de fail2ban (opcional)
+cat <<EOL > /etc/fail2ban/jail.local
+[DEFAULT]
+bantime  = 10m
+findtime = 10m
+maxretry = 5
+
+[sshd]
+enabled = true
+port = 777
+EOL
+
+jdejEoZZ#rtT
