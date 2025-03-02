@@ -129,7 +129,33 @@ fi
 # Snort2
 if ask_confirmation "¿Instalar Snort?"; then
     apt install -y snort
+
+    # Nueva sección de reglas
+    echo -e "\nConfiguración de reglas de Snort:"
+    if ask_confirmation "¿Desea usar reglas predeterminadas?"; then
+         echo "Añadiendo reglas básicas de Snort..."
+         cat << 'EOL' >> /etc/snort/rules/local.rules
+alert tcp any any -> any 80 (msg:"SQL Injection Detected"; content:"%27%20OR%20"; nocase; http_uri; sid:1000001;)
+alert tcp any any -> any 80 (msg:"XSS Attempt"; content:"<script>"; http_client_body; sid:1000002;)
+alert ip any any -> any any (msg:"Port Scan Attempt"; detection_filter: track by_src, count 5, seconds 10; sid:1000003;)
+alert tcp any any -> any 21 (msg:"FTP Buffer Overflow Attempt"; content:"|90 90 90 E8 C0 FF FF FF|"; sid:1000004;)
+alert tcp any any -> any 445 (msg:"EternalBlue Exploit Attempt"; content:"|FF|SMB|73|"; depth:5; sid:1000005;)
+alert tcp any any -> any 443 (msg:"Zeus C2 Traffic"; content:"/config.bin"; http_uri; sid:1000006;)
+alert tcp any any -> any 443 (msg:"Heartbleed Exploit"; content:"|18 03 00 00 03|"; offset:9; sid:1000007;)
+alert udp any any -> any 53 (msg:"DNS Tunneling Attempt"; content:"|01|"; depth:1; sid:1000008;)
+alert tcp any any -> any 80 (msg:"Directory Traversal Attempt"; content:"../"; http_uri; sid:1000009;)
+alert tcp any any -> any any (msg:"SYN Flood"; flags:S; detection_filter: track by_dst, count 100, seconds 1; sid:1000010;)
+EOL
+         systemctl restart snort
+         echo -e "\n\e[1;32m[+] Reglas aplicadas. Snort reiniciado.\e[0m"
+         echo -e "Ver logs en: \e[1;34m/var/log/snort/alert_fast\e[0m"
+    else
+         echo -e "\n\e[1;33m[!] Configura tus reglas en:\e[0m /etc/snort/rules/local.rules"
+         echo -e "Ver logs en: \e[1;34m/var/log/snort/alert_fast\e[0m"
+         echo -e "Reinicia después de editar: \e[1;36msystemctl restart snort\e[0m"
+    fi
 fi
+
 
 # Cowrie
 if ask_confirmation "¿Instalar Cowrie?"; then
